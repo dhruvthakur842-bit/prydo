@@ -1,0 +1,278 @@
+type http_request_result = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type http_header = 
+ record {
+   name: text;
+   value: text;
+ };
+type _ImmutableObjectStorageRefillResult = 
+ record {
+   success: opt bool;
+   topped_up_amount: opt nat;
+ };
+type _ImmutableObjectStorageRefillInformation = record {
+                                                  proposed_top_up_amount:
+                                                   opt nat;};
+type _ImmutableObjectStorageCreateCertificateResult = 
+ record {
+   blob_hash: text;
+   method: text;
+ };
+type VerificationStatus = 
+ variant {
+   FAIL;
+   PASS;
+   PENDING;
+   UNVERIFIED;
+ };
+type VerificationResult = 
+ variant {
+   err: text;
+   ok: VerificationRecord;
+ };
+type VerificationRecord = 
+ record {
+   error_reason: opt text;
+   id_document_type: opt IdDocumentType;
+   liveness_attempts: opt vec LivenessAttempt;
+   liveness_cooldown_until: opt int;
+   liveness_retry_count: opt nat;
+   status: VerificationStatus;
+   verified_at: int;
+   wallet: text;
+ };
+type Value = 
+ variant {
+   Array: vec Value;
+   Blob: blob;
+   Bool: bool;
+   Int: int;
+   Map: vec record {
+              text;
+              Value;
+            };
+   Nat: nat;
+   Text: text;
+ };
+type TransformationOutput = 
+ record {
+   body: blob;
+   headers: vec http_header;
+   status: nat;
+ };
+type TransformationInput = 
+ record {
+   context: blob;
+   response: http_request_result;
+ };
+type TransferResult = 
+ variant {
+   Err: TransferError;
+   Ok: nat;
+ };
+type TransferError = 
+ variant {
+   CreatedInFuture: record {ledger_time: nat;};
+   Duplicate: record {duplicate_of: nat;};
+   GenericBatchError: record {
+                        error_code: nat;
+                        message: text;
+                      };
+   GenericError: record {
+                   error_code: nat;
+                   message: text;
+                 };
+   InvalidRecipient;
+   NonExistingTokenId;
+   TooOld;
+   Unauthorized;
+ };
+type TransferArg = 
+ record {
+   created_at_time: opt nat;
+   from_subaccount: opt blob;
+   memo: opt blob;
+   to: Account;
+   token_id: nat;
+ };
+type ReferralRecord = 
+ record {
+   blockId: nat;
+   deviceHash: text;
+   ipHash: text;
+   referee: text;
+   referrer: text;
+   timestamp: int;
+ };
+type PrydoIdWithTokenId = 
+ record {
+   idRecord: PrydoIdRecord;
+   photo: opt ExternalBlob;
+   tokenId: opt nat;
+ };
+type PrydoIdWithPhoto = 
+ record {
+   idRecord: PrydoIdRecord;
+   photo: opt ExternalBlob;
+ };
+type PrydoIdRecord = 
+ record {
+   avatarType: text;
+   tier: text;
+   timestamp: int;
+   wallet: text;
+ };
+type MintOutput = 
+ record {
+   idCount: nat;
+   "record": PrydoIdWithPhoto;
+ };
+type MintInfo = 
+ record {
+   blockIndex: nat;
+   mintTimestamp: int;
+   tokenId: nat;
+   wallet: text;
+ };
+type LivenessStatus = 
+ record {
+   attempts: vec LivenessAttempt;
+   cooldown_until: opt int;
+   retry_count: nat;
+ };
+type LivenessAttempt = 
+ record {
+   attempted_at: int;
+   challenge_type: ChallengeType;
+   passed: bool;
+ };
+type IdDocumentType = 
+ variant {
+   Aadhaar;
+   DriversLicense;
+   NationalId;
+   Passport;
+ };
+type FraudFlag = 
+ record {
+   flagReason: text;
+   refereeWallet: text;
+   referrerWallet: text;
+   severity: text;
+   status: text;
+   timestamp: int;
+ };
+type ExternalBlob = blob;
+type DataCertificate = 
+ record {
+   certificate: blob;
+   hash_tree: blob;
+ };
+type ChallengeType = 
+ variant {
+   blink;
+   smile;
+ };
+type ArchivedBlocksRange = 
+ record {
+   length: nat;
+   start: nat;
+ };
+type Account = 
+ record {
+   owner: principal;
+   subaccount: opt blob;
+ };
+service : {
+  _immutableObjectStorageBlobsAreLive: (hashes: vec blob) -> (vec bool) query;
+  _immutableObjectStorageBlobsToDelete: () -> (vec blob) query;
+  _immutableObjectStorageConfirmBlobDeletion: (blobs: vec blob) -> ();
+  _immutableObjectStorageCreateCertificate: (blobHash: text) ->
+   (_ImmutableObjectStorageCreateCertificateResult);
+  _immutableObjectStorageRefillCashier: (refillInformation:
+   opt _ImmutableObjectStorageRefillInformation) ->
+   (_ImmutableObjectStorageRefillResult);
+  _immutableObjectStorageUpdateGatewayPrincipals: () -> ();
+  addReferral: (referrer: text, referee: text, ipHash: text, deviceHash:
+   text) -> ();
+  clearAllIds: () -> (nat);
+  generateReferralCode: (wallet: text) -> (text) query;
+  getAllMintedIds: () -> (vec PrydoIdWithPhoto) query;
+  getAllMintedIdsWithTokenIds: () -> (vec PrydoIdWithTokenId) query;
+  getFraudFlags: () -> (vec FraudFlag) query;
+  getIdByWallet: (wallet: text) -> (PrydoIdWithPhoto) query;
+  getIdCount: () -> (nat) query;
+  getLivenessStatus: (wallet: text) -> (LivenessStatus) query;
+  /// Look up a wallet's mint info: tokenId, ICRC-3 blockIndex, mintTimestamp.
+  /// Returns null if the wallet has never minted a Prydo ID.
+  getMintInfoByWallet: (wallet: text) -> (opt MintInfo) query;
+  /// Returns total minted supply (tokenCounter). Alias for icrc7_total_supply.
+  getMintedCount: () -> (nat) query;
+  getReferralsByWallet: (wallet: text) -> (vec ReferralRecord) query;
+  getVerificationStatus: (wallet: text) -> (VerificationRecord) query;
+  icrc3_get_blocks: (args: vec record {
+                                 length: nat;
+                                 start: nat;
+                               }) ->
+   (record {
+      archived_blocks: vec ArchivedBlocksRange;
+      blocks: vec record {
+                    block: Value;
+                    id: nat;
+                  };
+      log_length: nat;
+    }) query;
+  icrc3_get_tip_certificate: () -> (opt DataCertificate) query;
+  icrc3_supported_block_types: () ->
+   (vec record {
+          block_type: text;
+          url: text;
+        }) query;
+  icrc7_atomic_batch_transfers: () -> (opt bool) query;
+  icrc7_balance_of: (accounts: vec Account) -> (vec nat) query;
+  icrc7_collection_metadata: () -> (vec record {
+                                          text;
+                                          Value;
+                                        }) query;
+  icrc7_default_take_value: () -> (opt nat) query;
+  icrc7_description: () -> (opt text) query;
+  icrc7_logo: () -> (opt text) query;
+  icrc7_max_memo_size: () -> (opt nat) query;
+  icrc7_max_query_batch_size: () -> (opt nat) query;
+  icrc7_max_take_value: () -> (opt nat) query;
+  icrc7_max_update_batch_size: () -> (opt nat) query;
+  icrc7_name: () -> (text) query;
+  icrc7_owner_of: (token_ids: vec nat) -> (vec opt Account) query;
+  icrc7_supply_cap: () -> (opt nat) query;
+  icrc7_symbol: () -> (text) query;
+  icrc7_token_metadata: (token_ids: vec nat) ->
+   (vec opt vec record {
+                  text;
+                  Value;
+                }) query;
+  icrc7_tokens: (prev: opt nat, take: opt nat) -> (vec nat) query;
+  icrc7_tokens_of: (account: Account, prev: opt nat, take: opt nat) ->
+   (vec nat) query;
+  icrc7_total_supply: () -> (nat) query;
+  /// Minimal transfer stub — transfers are not intended in Prydo but required for ICRC-7 compliance.
+  icrc7_transfer: (args: vec TransferArg) -> (vec opt TransferResult);
+  /// Mint a Prydo ID. Requires a PASS verification for the wallet.
+  mintId: (wallet: text, tier: text, avatarType: text, photo:
+   opt ExternalBlob) -> (MintOutput);
+  reVerifyIdentity: (wallet: text) -> (text);
+  removeId: (wallet: text) -> (bool);
+  transform: (input: TransformationInput) -> (TransformationOutput) query;
+  updateFlagStatus: (referrerWallet: text, refereeWallet: text, timestamp:
+   int, newStatus: text) -> (bool);
+  uploadPhoto: (wallet: text, photo: ExternalBlob) -> (PrydoIdWithPhoto);
+  verifyIdentity: (wallet: text, id_image_url: text, selfie_image_url: 
+   text, idDocumentType: IdDocumentType, liveness_results:
+   vec record {
+         text;
+         bool;
+       }) -> (VerificationResult);
+}

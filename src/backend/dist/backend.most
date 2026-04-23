@@ -1,0 +1,108 @@
+// Version: 1.0.0
+type ChallengeType__773306144 = {#blink; #smile};
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type ExternalBlob__246066408 = Blob;
+type FraudFlag__571694959 =
+  {
+    flagReason : Text;
+    refereeWallet : Text;
+    referrerWallet : Text;
+    severity : Text;
+    status : Text;
+    timestamp : Int
+  };
+type IdDocumentType__780163534 =
+  {#Aadhaar; #DriversLicense; #NationalId; #Passport};
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type List__415060402<T> = List__790383201<T>;
+type List__790383201<T> =
+  {
+    var blockIndex : Nat__490723111;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__490723111
+  };
+type LivenessAttempt__807003985 =
+  {
+    attempted_at : Int;
+    challenge_type : ChallengeType__773306144;
+    passed : Bool
+  };
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type PrydoIdRecord__18242808 =
+  {avatarType : Text; tier : Text; timestamp : Int; wallet : Text};
+type PrydoIdWithPhoto__666774485 =
+  {idRecord : PrydoIdRecord__18242808; photo : ?ExternalBlob__246066408};
+type ReferralRecord__502422660 =
+  {
+    blockId : Nat;
+    deviceHash : Text;
+    ipHash : Text;
+    referee : Text;
+    referrer : Text;
+    timestamp : Int
+  };
+type Value__878163484 =
+  {
+    #Array : [Value__878163484];
+    #Blob : Blob;
+    #Bool : Bool;
+    #Int : Int;
+    #Map : [(Text, Value__878163484)];
+    #Nat : Nat;
+    #Text : Text
+  };
+type VerificationRecord__32682112 =
+  {
+    error_reason : ?Text;
+    id_document_type : ?IdDocumentType__780163534;
+    liveness_attempts : ?[LivenessAttempt__807003985];
+    liveness_cooldown_until : ?Int;
+    liveness_retry_count : ?Nat;
+    status : VerificationStatus__719181176;
+    verified_at : Int;
+    wallet : Text
+  };
+type VerificationStatus__719181176 = {#FAIL; #PASS; #PENDING; #UNVERIFIED};
+actor {
+  stable blockLog :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Value__878163484]];
+      var elementIndex : Nat__490723111
+    };
+  stable var currentIdCount : Nat;
+  stable fraudFlags :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?FraudFlag__571694959]];
+      var elementIndex : Nat__490723111
+    };
+  stable prydos :
+    {
+      var root : Node__46230540<Text, PrydoIdWithPhoto__666774485>;
+      var size : Nat__490723111
+    };
+  stable referralCounter : [var Nat];
+  stable referrals :
+    {
+      var root :
+        Node__46230540<Text, List__415060402<ReferralRecord__502422660>>;
+      var size : Nat__490723111
+    };
+  stable var tokenCounter : Nat;
+  stable tokenToWallet :
+    {var root : Node__46230540<Nat, Text>; var size : Nat__490723111};
+  stable verifications :
+    {
+      var root : Node__46230540<Text, VerificationRecord__32682112>;
+      var size : Nat__490723111
+    };
+  stable walletToToken :
+    {var root : Node__46230540<Text, Nat>; var size : Nat__490723111}
+};

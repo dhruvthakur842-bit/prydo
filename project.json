@@ -1,0 +1,27 @@
+{
+  "overview": "Prydo is a vibrant, dark-themed Web3 identity platform for the LGBTQ+ community. It features pride-themed colors, NFT-based identity (Prydo IDs) with ICRC-7 standard, AI identity verification, wallet connection, and now includes an AI chatbot support assistant and referral fraud detection system.",
+  "features": [
+    "AI chatbot support widget (bilingual Hindi/English) with LGBTQ resources and platform guide",
+    "Referral system with unique referral codes per wallet",
+    "Automated referral fraud detection flagging suspicious patterns",
+    "Admin dashboard with fraud flag review and approve/reject controls",
+    "NFT-based Prydo IDs with ICRC-7 standard (Genesis/Standard/Basic tiers)",
+    "AI identity verification (document + selfie + liveness challenges)",
+    "Wallet integration (Internet Identity + WalletConnect 300+ wallets)",
+    "Soulbound NFTs (non-transferable identity tokens)",
+    "ICRC-3 transaction history log"
+  ],
+  "category": "web3-identity",
+  "tags": [
+    "lgbtq",
+    "web3",
+    "nft",
+    "identity",
+    "icp",
+    "chatbot",
+    "fraud-detection",
+    "referral",
+    "motoko"
+  ],
+  "last_updated": "2026-04-16T10:36:36.908Z"
+}

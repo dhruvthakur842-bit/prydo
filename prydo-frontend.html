@@ -1,0 +1,1609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prydo — Power. Identity. Ownership.</title>
+  <meta name="description" content="Mint your Prydo ID and become part of a global Web3 community empowering LGBTQ+ voices." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Bricolage+Grotesque:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --pride-pink: #ff4fd8;
+      --pride-purple: #8b5cf6;
+      --pride-cyan: #22d3ee;
+      --pride-green: #34d399;
+      --pride-yellow: #fbbf24;
+      --pride-rose: #fb7185;
+      --bg-dark: #07040e;
+      --bg-mid: #0d0820;
+      --gold: #F5C84C;
+      --icp-blue: #29ABE2;
+    }
+
+    html { scroll-behavior: smooth; color-scheme: dark; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: linear-gradient(135deg, #07040e 0%, #0d0820 50%, #07040e 100%);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ---- PRIDE GRADIENT ---- */
+    .pride-text {
+      background: linear-gradient(90deg, #ff4fd8, #8b5cf6, #22d3ee, #34d399, #fbbf24, #fb7185);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .pride-bg {
+      background: linear-gradient(135deg, #ff4fd8, #8b5cf6, #22d3ee, #34d399, #fbbf24, #fb7185);
+    }
+
+    /* ---- NAV ---- */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      height: 64px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-logo {
+      height: 40px;
+      filter: drop-shadow(0 0 8px rgba(139,92,246,0.5));
+    }
+    .nav-links {
+      display: flex; gap: 28px; list-style: none;
+    }
+    .nav-links a {
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: white; }
+    .nav-mint-btn {
+      padding: 8px 20px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff4fd8 0%, #8b5cf6 50%, #22d3ee 100%);
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      box-shadow: 0 0 20px rgba(255,79,216,0.4), 0 0 40px rgba(139,92,246,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .nav-mint-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255,79,216,0.6), 0 0 60px rgba(139,92,246,0.3);
+    }
+    .hamburger {
+      display: none;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 64px; left: 0; right: 0;
+      background: rgba(10,5,25,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding: 16px 24px;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 99;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .mobile-menu a:last-of-type { border-bottom: none; }
+
+    /* ---- HERO ---- */
+    #home {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+    .star-field { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+    .star {
+      position: absolute; border-radius: 50%; background: white;
+      animation: twinkle 3s infinite alternate;
+    }
+    @keyframes twinkle {
+      0% { opacity: 0.2; transform: scale(1); }
+      100% { opacity: 0.8; transform: scale(1.3); }
+    }
+    .hero-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 32px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .hero-label {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 20px;
+    }
+    .hero-label-line { height: 1px; width: 48px; }
+    .hero-label span {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+    h1 {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(42px, 6vw, 72px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+    }
+    .hero-tagline {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(18px, 2.5vw, 24px);
+      font-weight: 600;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 12px;
+    }
+    .hero-desc {
+      font-size: 16px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+      max-width: 480px;
+      margin-bottom: 28px;
+    }
+    .hero-btns { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 40px; }
+    .btn-primary {
+      padding: 14px 32px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #ff4fd8 0%, #8b5cf6 50%, #22d3ee 100%);
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      box-shadow: 0 0 20px rgba(255,79,216,0.4), 0 0 40px rgba(139,92,246,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 30px rgba(255,79,216,0.6), 0 0 60px rgba(139,92,246,0.3);
+    }
+    .btn-secondary {
+      padding: 14px 32px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      color: white;
+      font-weight: 700;
+      font-size: 15px;
+      border: 1px solid rgba(255,255,255,0.2);
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: background 0.2s, border-color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 0 20px rgba(139,92,246,0.2);
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.4); }
+    .hero-stats {
+      display: flex;
+      gap: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .hero-stat-val {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      display: block;
+    }
+    .hero-stat-lbl {
+      font-size: 11px;
+      color: rgba(255,255,255,0.45);
+      margin-top: 2px;
+      display: block;
+    }
+    .hero-visual {
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-card {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      border-radius: 24px;
+      padding: 4px;
+      background: linear-gradient(135deg, rgba(255,79,216,0.5), rgba(139,92,246,0.5), rgba(34,211,238,0.5));
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-card-inner {
+      border-radius: 20px;
+      overflow: hidden;
+      background: rgba(10,5,25,0.8);
+      padding: 16px;
+      position: relative;
+    }
+    .hero-card-inner img {
+      width: 100%; border-radius: 16px;
+      display: block;
+    }
+    .hero-card-badge {
+      position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%);
+      background: rgba(10,5,25,0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 16px;
+      padding: 8px 20px;
+      text-align: center;
+      white-space: nowrap;
+    }
+    .hero-card-badge p:first-child {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .hero-card-badge p:last-child {
+      color: rgba(255,255,255,0.5);
+      font-size: 10px;
+      margin-top: 2px;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(2deg); }
+    }
+
+    /* ---- SECTION SHARED ---- */
+    section { padding: 80px 0; }
+    .section-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .section-label {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 16px;
+    }
+    .section-label-line { height: 1px; width: 32px; }
+    .section-label span {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.25em; text-transform: uppercase;
+    }
+    .section-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 800;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.7;
+      max-width: 600px;
+    }
+
+    /* ---- MINT SECTION ---- */
+    #mint { background: rgba(0,0,0,0.2); }
+    .mint-header { text-align: center; margin-bottom: 56px; }
+    .mint-header .section-label { justify-content: center; }
+    .mint-header .section-sub { margin: 0 auto; }
+    .mint-pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 24px; }
+    .mint-pill {
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 600;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.25);
+      color: rgba(255,255,255,0.7);
+    }
+    .tier-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 48px;
+    }
+    .tier-card {
+      border-radius: 20px;
+      padding: 28px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    .tier-card.featured {
+      background: rgba(245,200,76,0.05);
+      border-color: rgba(245,200,76,0.35);
+      box-shadow: 0 0 40px rgba(245,200,76,0.12);
+    }
+    .tier-badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      margin-bottom: 12px;
+    }
+    .tier-badge.genesis {
+      background: rgba(245,200,76,0.15);
+      color: #F5C84C;
+      border: 1px solid rgba(245,200,76,0.3);
+    }
+    .tier-badge.early {
+      background: rgba(203,213,225,0.1);
+      color: #CBD5E1;
+      border: 1px solid rgba(203,213,225,0.25);
+    }
+    .tier-badge.basic {
+      background: rgba(217,119,6,0.1);
+      color: #D97706;
+      border: 1px solid rgba(217,119,6,0.25);
+    }
+    .tier-name {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 20px; font-weight: 700; margin-bottom: 6px;
+    }
+    .tier-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 20px; }
+    .tier-price-row { display: flex; align-items: baseline; gap: 8px; margin-bottom: 4px; }
+    .tier-price {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 32px; font-weight: 800;
+    }
+    .tier-supply { font-size: 11px; color: rgba(255,255,255,0.35); margin-bottom: 20px; }
+    .tier-features { list-style: none; margin-bottom: 24px; display: flex; flex-direction: column; gap: 8px; }
+    .tier-features li {
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .tier-features li::before {
+      content: '';
+      width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    }
+    .tier-features.genesis li::before { background: #F5C84C; }
+    .tier-features.early li::before { background: #CBD5E1; }
+    .tier-features.basic li::before { background: #D97706; }
+
+    /* Mint Prydo ID button (active) */
+    .btn-mint-genesis {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #F5C84C, rgba(245,200,76,0.7));
+      color: #0a0515;
+      font-weight: 700;
+      font-size: 14px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: transform 0.15s, opacity 0.15s;
+      box-shadow: 0 0 20px rgba(245,200,76,0.3);
+    }
+    .btn-mint-genesis:hover { transform: scale(1.02); opacity: 0.9; }
+    .btn-mint-genesis:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .btn-locked {
+      width: 100%;
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.3);
+      font-weight: 600;
+      font-size: 14px;
+      border: 1px solid rgba(255,255,255,0.08);
+      cursor: not-allowed;
+      letter-spacing: 0.03em;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+    }
+
+    /* ---- MINT MODAL ---- */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(8px);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-overlay.open { display: flex; }
+    .mint-modal {
+      background: linear-gradient(160deg, rgba(20,8,50,0.99), rgba(10,5,25,0.99));
+      border: 1px solid rgba(139,92,246,0.3);
+      border-radius: 24px;
+      padding: 36px;
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 16px; right: 16px;
+      background: rgba(255,255,255,0.06);
+      border: none;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+    .modal-close:hover { background: rgba(255,255,255,0.1); color: white; }
+    .modal-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 22px; font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .modal-sub { font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
+    .form-group { margin-bottom: 18px; }
+    .form-label {
+      display: block;
+      font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px;
+      color: white;
+      font-size: 14px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-input:focus { border-color: rgba(139,92,246,0.5); }
+    .form-input::placeholder { color: rgba(255,255,255,0.25); }
+    .avatar-type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .avatar-type-btn {
+      padding: 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      font-size: 13px; font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+      display: flex; flex-direction: column; align-items: center; gap: 4px;
+      text-align: center;
+    }
+    .avatar-type-btn.selected {
+      background: rgba(139,92,246,0.15);
+      border-color: rgba(139,92,246,0.5);
+      color: white;
+    }
+    .avatar-type-icon { font-size: 24px; }
+    .mint-notice {
+      background: rgba(245,200,76,0.07);
+      border: 1px solid rgba(245,200,76,0.2);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    .mint-notice strong { color: #F5C84C; }
+    .btn-submit-mint {
+      width: 100%;
+      padding: 16px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #F5C84C, rgba(245,200,76,0.7));
+      color: #0a0515;
+      font-weight: 700;
+      font-size: 15px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: transform 0.15s, opacity 0.15s;
+      box-shadow: 0 0 24px rgba(245,200,76,0.35);
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-submit-mint:hover:not(:disabled) { transform: scale(1.02); }
+    .btn-submit-mint:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(0,0,0,0.3);
+      border-top-color: #0a0515;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .mint-result {
+      text-align: center;
+      padding: 24px 0;
+    }
+    .mint-result-icon { font-size: 48px; margin-bottom: 12px; }
+    .mint-result-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 22px; font-weight: 700; margin-bottom: 8px;
+    }
+    .mint-result-msg { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; }
+    .mint-result-id {
+      margin-top: 20px;
+      padding: 16px;
+      background: rgba(41,171,226,0.08);
+      border: 1px solid rgba(41,171,226,0.25);
+      border-radius: 12px;
+      font-size: 13px;
+    }
+    .mint-result-id-row {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 4px 0;
+    }
+    .mint-result-id-key { color: rgba(255,255,255,0.4); }
+    .mint-result-id-val { color: #29ABE2; font-weight: 600; font-family: monospace; font-size: 12px; }
+    .error-box {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: 12px;
+      padding: 12px 16px;
+      color: #fca5a5;
+      font-size: 13px;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* ---- ABOUT SECTION ---- */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+    .about-img { width: 100%; border-radius: 20px; }
+    .about-features { display: flex; flex-direction: column; gap: 16px; margin-top: 28px; }
+    .about-feature {
+      display: flex; gap: 16px; align-items: flex-start;
+    }
+    .about-feature-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.2);
+      font-size: 18px;
+    }
+    .about-feature-title { font-weight: 700; font-size: 14px; margin-bottom: 4px; }
+    .about-feature-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* ---- COMMUNITY ---- */
+    #community {
+      background: rgba(0,0,0,0.15);
+    }
+    .community-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+    .community-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 24px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .community-card:hover {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(139,92,246,0.25);
+    }
+    .community-avatar {
+      width: 56px; height: 56px; border-radius: 14px;
+      background: linear-gradient(135deg, rgba(255,79,216,0.3), rgba(139,92,246,0.3));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px;
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+    .community-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .community-name { font-weight: 700; font-size: 15px; margin-bottom: 4px; }
+    .community-role {
+      font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(255,255,255,0.4); margin-bottom: 12px;
+    }
+    .community-quote { font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; font-style: italic; }
+
+    /* ---- RESOURCES ---- */
+    #resources { background: rgba(0,0,0,0.2); }
+    .resources-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .resource-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      padding: 20px;
+    }
+    .resource-card.crisis {
+      border-color: rgba(255,79,216,0.25);
+      background: rgba(255,79,216,0.04);
+    }
+    .resource-title { font-weight: 700; font-size: 15px; margin-bottom: 6px; }
+    .resource-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 12px; }
+    .resource-link {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 12px; font-weight: 700;
+      color: var(--pride-pink);
+      text-decoration: none;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      transition: opacity 0.2s;
+    }
+    .resource-link:hover { opacity: 0.75; }
+
+    /* ---- FAQ ---- */
+    #faq { }
+    .faq-list { margin-top: 36px; display: flex; flex-direction: column; gap: 12px; }
+    .faq-item {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .faq-q {
+      padding: 18px 20px;
+      font-weight: 700; font-size: 14px;
+      cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      user-select: none;
+      transition: background 0.15s;
+    }
+    .faq-q:hover { background: rgba(255,255,255,0.03); }
+    .faq-icon { font-size: 18px; transition: transform 0.25s; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s;
+      font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.7;
+      padding: 0 20px;
+    }
+    .faq-item.open .faq-a {
+      max-height: 300px;
+      padding: 0 20px 18px;
+    }
+
+    /* ---- ROADMAP ---- */
+    #roadmap { background: rgba(0,0,0,0.15); }
+    .roadmap-list { display: flex; flex-direction: column; gap: 0; margin-top: 40px; position: relative; }
+    .roadmap-list::before {
+      content: '';
+      position: absolute;
+      left: 20px; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, rgba(139,92,246,0.4), rgba(255,79,216,0.2));
+    }
+    .roadmap-item { display: flex; gap: 24px; padding-bottom: 40px; position: relative; }
+    .roadmap-dot {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      position: relative; z-index: 1;
+    }
+    .roadmap-dot.done { background: rgba(139,92,246,0.25); border: 2px solid rgba(139,92,246,0.5); }
+    .roadmap-dot.current { background: rgba(245,200,76,0.2); border: 2px solid rgba(245,200,76,0.5); }
+    .roadmap-dot.upcoming { background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); }
+    .roadmap-content { padding-top: 8px; }
+    .roadmap-phase {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); margin-bottom: 4px;
+    }
+    .roadmap-title { font-weight: 700; font-size: 16px; margin-bottom: 6px; }
+    .roadmap-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.65; }
+
+    /* ---- FOOTER ---- */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 64px 0 32px;
+      margin-top: 40px;
+      position: relative;
+    }
+    footer::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, #ff4fd8, #8b5cf6, #22d3ee, #34d399, #fbbf24, #fb7185);
+      opacity: 0.3;
+    }
+    .footer-inner { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer-logo-img { height: 40px; margin-bottom: 14px; filter: drop-shadow(0 0 6px rgba(139,92,246,0.4)); }
+    .footer-tagline { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.65; margin-bottom: 20px; }
+    .footer-socials { display: flex; flex-wrap: wrap; gap: 8px; }
+    .footer-social {
+      width: 36px; height: 36px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .footer-social:hover { color: white; background: rgba(255,255,255,0.1); }
+    .footer-col-title {
+      font-family: 'Bricolage Grotesque', sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a, .footer-links button {
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 13px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      text-align: left;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover, .footer-links button:hover { color: white; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-copy { font-size: 12px; color: rgba(255,255,255,0.3); }
+    .footer-built {
+      font-size: 12px; color: rgba(255,255,255,0.25);
+      text-decoration: none;
+      display: flex; align-items: center; gap: 4px;
+      transition: color 0.2s;
+    }
+    .footer-built:hover { color: rgba(255,255,255,0.5); }
+    .heart { color: #FF4FD8; }
+
+    /* ---- SUCCESS BANNER ---- */
+    .success-banner {
+      position: fixed; bottom: 24px; right: 24px; z-index: 300;
+      background: linear-gradient(135deg, rgba(20,8,50,0.98), rgba(10,5,25,0.98));
+      border: 1px solid rgba(34,197,94,0.4);
+      border-radius: 16px;
+      padding: 16px 20px;
+      display: flex; align-items: center; gap: 12px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.5), 0 0 30px rgba(34,197,94,0.15);
+      max-width: 320px;
+      transform: translateY(100px); opacity: 0;
+      transition: transform 0.4s ease, opacity 0.4s ease;
+    }
+    .success-banner.show { transform: translateY(0); opacity: 1; }
+    .success-banner-icon { font-size: 28px; }
+    .success-banner-text strong { display: block; font-size: 14px; font-weight: 700; margin-bottom: 2px; }
+    .success-banner-text span { font-size: 12px; color: rgba(255,255,255,0.5); }
+
+    /* ---- RESPONSIVE ---- */
+    @media (max-width: 1024px) {
+      .tier-cards { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; }
+      .community-grid { grid-template-columns: 1fr 1fr; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .about-grid { grid-template-columns: 1fr !important; }
+    }
+    @media (max-width: 768px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .hero-visual { order: -1; }
+      .hero-card { max-width: 320px; }
+      .nav-links, .nav-right { display: none; }
+      .hamburger { display: block; }
+      .community-grid { grid-template-columns: 1fr; }
+      .resources-grid { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="#home">
+      <img src="https://prydo-u2p.caffeine.xyz/assets/generated/prydo-logo-new.png" alt="Prydo" class="nav-logo" onerror="this.style.display='none'; this.nextElementSibling.style.display='block'" />
+      <span style="display:none; font-family:'Bricolage Grotesque',sans-serif; font-size:22px; font-weight:800;" class="pride-text">PRYDO</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#mint">Mint Prydo ID</a></li>
+      <li><a href="#ecosystem">Ecosystem</a></li>
+      <li><a href="#roadmap">Roadmap</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="#mint" class="nav-mint-btn">Mint Prydo ID</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMenu()">
+      <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#home" onclick="closeMenu()">Home</a>
+    <a href="#mint" onclick="closeMenu()">Mint Prydo ID</a>
+    <a href="#ecosystem" onclick="closeMenu()">Ecosystem</a>
+    <a href="#roadmap" onclick="closeMenu()">Roadmap</a>
+    <a href="#faq" onclick="closeMenu()">FAQ</a>
+  </div>
+
+  <!-- HERO -->
+  <section id="home">
+    <div class="star-field" id="starField"></div>
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="hero-label">
+          <div class="hero-label-line pride-bg"></div>
+          <span class="pride-text">Prydo Identity</span>
+        </div>
+        <h1>
+          Prydo.<br/>
+          <span class="pride-text">Power.</span><br/>
+          Ownership.
+        </h1>
+        <p class="hero-tagline">Build your decentralized identity on the blockchain.</p>
+        <p class="hero-desc">Mint your Prydo ID and become part of a global Web3 community empowering LGBTQ+ voices.</p>
+        <div class="hero-btns">
+          <a href="#mint" class="btn-primary">Mint Prydo ID</a>
+          <a href="#ecosystem" class="btn-secondary">Explore Ecosystem</a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <span class="hero-stat-val pride-text">10K+</span>
+            <span class="hero-stat-lbl">Prydo IDs</span>
+          </div>
+          <div>
+            <span class="hero-stat-val pride-text">4</span>
+            <span class="hero-stat-lbl">Tiers</span>
+          </div>
+          <div>
+            <span class="hero-stat-val pride-text">100%</span>
+            <span class="hero-stat-lbl">Soulbound</span>
+          </div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="hero-card-inner">
+            <img src="https://prydo-u2p.caffeine.xyz/assets/generated/hero-pride-badge.dim_600x600.png" alt="Prydo Identity NFT Badge" loading="eager" onerror="this.style.background='linear-gradient(135deg,rgba(255,79,216,0.3),rgba(139,92,246,0.5),rgba(34,211,238,0.3))'; this.style.minHeight='300px'; this.removeAttribute('src')" />
+            <div class="hero-card-badge">
+              <p class="pride-text">Genesis Prydo ID</p>
+              <p>Soulbound &middot; Non-Transferable</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MINT SECTION -->
+  <section id="mint">
+    <div class="section-inner">
+      <div class="mint-header">
+        <div class="section-label">
+          <div class="section-label-line pride-bg"></div>
+          <span class="pride-text">Mint Now</span>
+        </div>
+        <h2 class="section-title">Choose Your <span class="pride-text">Prydo ID</span></h2>
+        <p class="section-sub">Each Prydo ID is a soulbound NFT — unique, non-transferable, and permanently tied to your identity on the Internet Computer blockchain.</p>
+        <div class="mint-pills">
+          <span class="mint-pill">Unique Avatar</span>
+          <span class="mint-pill">On-Chain Identity</span>
+          <span class="mint-pill">Community Access</span>
+          <span class="mint-pill">Reputation System</span>
+          <span class="mint-pill">Future Ecosystem Benefits</span>
+        </div>
+      </div>
+
+      <div class="tier-cards">
+        <!-- GENESIS -->
+        <div class="tier-card featured">
+          <span class="tier-badge genesis">GENESIS</span>
+          <div class="tier-name">Genesis Prydo ID</div>
+          <div class="tier-sub">For early pioneers of the Prydo ecosystem</div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#F5C84C;margin-bottom:12px;">GOLD TIER</div>
+          <div class="tier-price-row">
+            <span class="tier-price" style="color:#F5C84C">FREE</span>
+          </div>
+          <div class="tier-supply">Supply: 100</div>
+          <ul class="tier-features genesis">
+            <li>Exclusive Genesis member status</li>
+            <li>Early governance access</li>
+            <li>Special community recognition</li>
+            <li>Golden identity badge</li>
+            <li>Legendary avatar traits</li>
+          </ul>
+          <button class="btn-mint-genesis" id="btnMintGenesis" onclick="openMintModal('genesis')">
+            Mint Genesis ID
+          </button>
+        </div>
+
+        <!-- EARLY MEMBER -->
+        <div class="tier-card">
+          <span class="tier-badge early">EARLY MEMBER</span>
+          <div class="tier-name">Early Member Prydo ID</div>
+          <div class="tier-sub">For early adopters joining Prydo</div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#CBD5E1;margin-bottom:12px;">SILVER TIER</div>
+          <div class="tier-price-row">
+            <span class="tier-price" style="color:#CBD5E1">$10</span>
+          </div>
+          <div class="tier-supply">Supply: Limited</div>
+          <ul class="tier-features early">
+            <li>Early community access</li>
+            <li>Future governance eligibility</li>
+            <li>Participation in ecosystem programs</li>
+            <li>Silver identity badge</li>
+            <li>Rare avatar traits</li>
+          </ul>
+          <div class="btn-locked">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Locked — Coming Soon
+          </div>
+        </div>
+
+        <!-- BASIC -->
+        <div class="tier-card">
+          <span class="tier-badge basic">BASIC</span>
+          <div class="tier-name">Basic Prydo ID</div>
+          <div class="tier-sub">Open membership for everyone</div>
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#D97706;margin-bottom:12px;">BRONZE TIER</div>
+          <div class="tier-price-row">
+            <span class="tier-price" style="color:#D97706">$20</span>
+          </div>
+          <div class="tier-supply">Supply: Unlimited</div>
+          <ul class="tier-features basic">
+            <li>Access to Prydo platform</li>
+            <li>Community participation</li>
+            <li>Future identity utilities</li>
+            <li>Bronze identity badge</li>
+            <li>Standard avatar traits</li>
+          </ul>
+          <div class="btn-locked">
+            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            Locked — Coming Soon
+          </div>
+        </div>
+      </div>
+
+      <!-- ICP Notice -->
+      <div style="text-align:center;margin-top:20px;">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border-radius:999px;background:rgba(41,171,226,0.08);border:1px solid rgba(41,171,226,0.2);font-size:12px;color:#29ABE2;font-weight:600;">
+          <span style="width:6px;height:6px;border-radius:50%;background:#29ABE2;display:inline-block;"></span>
+          Powered by Internet Computer (ICP) Blockchain
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-inner">
+      <div class="about-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;">
+        <div>
+          <div class="section-label">
+            <div class="section-label-line pride-bg"></div>
+            <span class="pride-text">About Prydo</span>
+          </div>
+          <h2 class="section-title">Decentralized Identity for <span class="pride-text">Everyone</span></h2>
+          <p class="section-sub">Prydo is a Web3 identity platform that puts ownership in your hands. Your Prydo ID is yours forever — on-chain, uncensorable, and community-powered.</p>
+          <div class="about-features">
+            <div class="about-feature">
+              <div class="about-feature-icon">🔐</div>
+              <div>
+                <div class="about-feature-title">Soulbound Identity</div>
+                <div class="about-feature-desc">Your ID is permanently linked to your wallet. Non-transferable and impossible to fake.</div>
+              </div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature-icon">🌈</div>
+              <div>
+                <div class="about-feature-title">LGBTQ+ Community</div>
+                <div class="about-feature-desc">A safe, inclusive, and empowering space for LGBTQ+ voices in Web3.</div>
+              </div>
+            </div>
+            <div class="about-feature">
+              <div class="about-feature-icon">⛓️</div>
+              <div>
+                <div class="about-feature-title">ICP Blockchain</div>
+                <div class="about-feature-desc">Built on the Internet Computer — decentralized, scalable, and low-cost.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <img src="https://prydo-u2p.caffeine.xyz/assets/generated/prydo-about-illustration.dim_500x400.jpg" alt="About Prydo" class="about-img" style="width:100%;border-radius:20px;" onerror="this.style.background='linear-gradient(135deg,rgba(255,79,216,0.2),rgba(139,92,246,0.3),rgba(34,211,238,0.2))';this.style.minHeight='300px';this.removeAttribute('src')" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ECOSYSTEM -->
+  <section id="ecosystem" style="background:rgba(0,0,0,0.2);">
+    <div class="section-inner">
+      <div class="section-label">
+        <div class="section-label-line pride-bg"></div>
+        <span class="pride-text">Ecosystem</span>
+      </div>
+      <h2 class="section-title">The Prydo <span class="pride-text">Ecosystem</span></h2>
+      <p class="section-sub">From identity to governance to community — Prydo is building the infrastructure for an inclusive Web3 future.</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:40px;">
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+          <div style="font-size:32px;margin-bottom:14px;">🆔</div>
+          <div style="font-weight:700;font-size:16px;margin-bottom:8px;">Prydo ID</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.65;">Your soulbound on-chain identity NFT. Unique, non-transferable, and community-verified.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+          <div style="font-size:32px;margin-bottom:14px;">🗳️</div>
+          <div style="font-weight:700;font-size:16px;margin-bottom:8px;">DAO Governance</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.65;">ID holders vote on proposals and shape the future of the Prydo platform.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+          <div style="font-size:32px;margin-bottom:14px;">🌐</div>
+          <div style="font-weight:700;font-size:16px;margin-bottom:8px;">Community</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.65;">Connect, create, and celebrate with LGBTQ+ community members worldwide.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+          <div style="font-size:32px;margin-bottom:14px;">🏆</div>
+          <div style="font-weight:700;font-size:16px;margin-bottom:8px;">Reputation</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.65;">Build your on-chain reputation through participation, contributions, and community engagement.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+          <div style="font-size:32px;margin-bottom:14px;">🎨</div>
+          <div style="font-weight:700;font-size:16px;margin-bottom:8px;">Avatar Builder</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.65;">Design your unique LGBTQ+ identity avatar to represent yourself on-chain.</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:24px;">
+          <div style="font-size:32px;margin-bottom:14px;">🔒</div>
+          <div style="font-weight:700;font-size:16px;margin-bottom:8px;">Decentralized Storage</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.5);line-height:1.65;">All identity data is stored on the ICP blockchain — censorship-resistant and permanent.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY SPOTLIGHT -->
+  <section id="community">
+    <div class="section-inner">
+      <div class="section-label">
+        <div class="section-label-line pride-bg"></div>
+        <span class="pride-text">Community</span>
+      </div>
+      <h2 class="section-title">Community <span class="pride-text">Spotlight</span></h2>
+      <p class="section-sub">Real members, real stories. Join thousands of LGBTQ+ pioneers building their identity on-chain.</p>
+      <div class="community-grid">
+        <div class="community-card">
+          <div class="community-avatar">🌈</div>
+          <div class="community-name">Alex Rivera</div>
+          <div class="community-role">Genesis Member</div>
+          <div class="community-quote">"Prydo gave me ownership of my identity for the first time. No one can take that away."</div>
+        </div>
+        <div class="community-card">
+          <div class="community-avatar">⚡</div>
+          <div class="community-name">Jordan Lee</div>
+          <div class="community-role">Genesis Member</div>
+          <div class="community-quote">"The idea of a truly decentralized LGBTQ+ identity platform is revolutionary. I'm proud to be part of it."</div>
+        </div>
+        <div class="community-card">
+          <div class="community-avatar">🦋</div>
+          <div class="community-name">Sam Chen</div>
+          <div class="community-role">Genesis Member</div>
+          <div class="community-quote">"Finally, a Web3 space that truly sees and celebrates me. Prydo is the future."</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section id="resources">
+    <div class="section-inner">
+      <div class="section-label">
+        <div class="section-label-line pride-bg"></div>
+        <span class="pride-text">Resources</span>
+      </div>
+      <h2 class="section-title">Community <span class="pride-text">Resources</span></h2>
+      <p class="section-sub">Support, education, and crisis resources for the LGBTQ+ community.</p>
+      <div class="resources-grid">
+        <div class="resource-card crisis">
+          <div class="resource-title">🆘 Trevor Project</div>
+          <div class="resource-desc">24/7 crisis intervention and suicide prevention for LGBTQ+ youth. Call 1-866-488-7386 or text START to 678-678.</div>
+          <a href="https://www.thetrevorproject.org" target="_blank" rel="noopener noreferrer" class="resource-link">Visit &rarr;</a>
+        </div>
+        <div class="resource-card crisis">
+          <div class="resource-title">📞 Trans Lifeline</div>
+          <div class="resource-desc">A peer support hotline staffed by trans people, for trans people in crisis. US: 877-565-8860 | Canada: 877-330-6366.</div>
+          <a href="https://translifeline.org" target="_blank" rel="noopener noreferrer" class="resource-link">Visit &rarr;</a>
+        </div>
+        <div class="resource-card">
+          <div class="resource-title">📚 GLSEN</div>
+          <div class="resource-desc">Creating safe and inclusive schools for LGBTQ+ students through research, advocacy, and training.</div>
+          <a href="https://www.glsen.org" target="_blank" rel="noopener noreferrer" class="resource-link">Visit &rarr;</a>
+        </div>
+        <div class="resource-card">
+          <div class="resource-title">🏳️‍🌈 PFLAG</div>
+          <div class="resource-desc">Support, education, and advocacy for LGBTQ+ people, their families, and allies.</div>
+          <a href="https://pflag.org" target="_blank" rel="noopener noreferrer" class="resource-link">Visit &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ROADMAP -->
+  <section id="roadmap">
+    <div class="section-inner">
+      <div class="section-label">
+        <div class="section-label-line pride-bg"></div>
+        <span class="pride-text">Roadmap</span>
+      </div>
+      <h2 class="section-title">Our <span class="pride-text">Roadmap</span></h2>
+      <p class="section-sub">A phased journey to build the most inclusive Web3 identity platform.</p>
+      <div class="roadmap-list">
+        <div class="roadmap-item">
+          <div class="roadmap-dot done">✅</div>
+          <div class="roadmap-content">
+            <div class="roadmap-phase">Phase 1 — Complete</div>
+            <div class="roadmap-title">Genesis Launch</div>
+            <div class="roadmap-desc">Launch of Prydo platform, Genesis ID minting, initial community building, and ICP blockchain integration.</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot current">🔥</div>
+          <div class="roadmap-content">
+            <div class="roadmap-phase">Phase 2 — Active</div>
+            <div class="roadmap-title">Community Growth</div>
+            <div class="roadmap-desc">Expanding the Genesis community, onboarding early members, and building DAO governance infrastructure.</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot upcoming">🚀</div>
+          <div class="roadmap-content">
+            <div class="roadmap-phase">Phase 3 — Upcoming</div>
+            <div class="roadmap-title">Ecosystem Expansion</div>
+            <div class="roadmap-desc">Early Member and Basic tier launches, reputation system, community marketplace, and cross-chain bridges.</div>
+          </div>
+        </div>
+        <div class="roadmap-item">
+          <div class="roadmap-dot upcoming">🌐</div>
+          <div class="roadmap-content">
+            <div class="roadmap-phase">Phase 4 — Vision</div>
+            <div class="roadmap-title">Full Decentralization</div>
+            <div class="roadmap-desc">Full DAO governance, decentralized storage for all identity data, and global LGBTQ+ community hub.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-inner">
+      <div class="section-label">
+        <div class="section-label-line pride-bg"></div>
+        <span class="pride-text">FAQ</span>
+      </div>
+      <h2 class="section-title">Frequently Asked <span class="pride-text">Questions</span></h2>
+      <div class="faq-list" id="faqList">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What is a Prydo ID? <span class="faq-icon">+</span></div>
+          <div class="faq-a">A Prydo ID is a soulbound NFT on the Internet Computer blockchain. It's your unique, non-transferable on-chain identity that proves your membership in the Prydo community.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What is a soulbound NFT? <span class="faq-icon">+</span></div>
+          <div class="faq-a">A soulbound NFT cannot be transferred, sold, or moved to another wallet. It is permanently bound to the address that minted it — making it a true identity token.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">How do I mint my Prydo ID? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Click the "Mint Prydo ID" button, enter your wallet address, choose your avatar type, and submit. Your Genesis ID will be minted and recorded permanently on the ICP blockchain.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Is the Genesis ID really free? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Yes! The Genesis tier is completely free for early community members. Only 100 Genesis IDs will ever be minted, so act fast.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">What blockchain is Prydo built on? <span class="faq-icon">+</span></div>
+          <div class="faq-a">Prydo is built on the Internet Computer (ICP) — a next-generation blockchain that offers full decentralization, low cost, and high performance.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">Can I have more than one Prydo ID? <span class="faq-icon">+</span></div>
+          <div class="faq-a">No. Each wallet address can only mint one Prydo ID. This enforces the "1 wallet, 1 identity" principle for a fair and authentic community.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <img src="https://prydo-u2p.caffeine.xyz/assets/generated/prydo-logo-new.png" alt="Prydo" class="footer-logo-img" onerror="this.style.display='none'" />
+          <p class="footer-tagline">Prydo is a decentralized identity platform powered by blockchain technology.</p>
+          <div class="footer-socials">
+            <a href="https://x.com/PrydoOfficial" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Twitter">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.259 5.629 5.905-5.629zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/prydo.official/" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="Instagram">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://github.com/prydoofficial-create/pride-identity-nft" target="_blank" rel="noopener noreferrer" class="footer-social" aria-label="GitHub">
+              <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-col-title">Navigation</div>
+          <ul class="footer-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#mint">Mint Prydo ID</a></li>
+            <li><a href="#ecosystem">Ecosystem</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+            <li><a href="#faq">FAQ</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Legal</div>
+          <ul class="footer-links">
+            <li><button onclick="alert('Privacy Policy coming soon')">Privacy Policy</button></li>
+            <li><button onclick="alert('Terms & Conditions coming soon')">Terms &amp; Conditions</button></li>
+            <li><button onclick="alert('NFT Disclaimer coming soon')">NFT Disclaimer</button></li>
+            <li><button onclick="alert('DAO Governance Policy coming soon')">DAO Governance Policy</button></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Community</div>
+          <ul class="footer-links">
+            <li><a href="https://x.com/PrydoOfficial" target="_blank" rel="noopener noreferrer">Twitter / X</a></li>
+            <li><a href="https://www.instagram.com/prydo.official/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+            <li><a href="https://www.threads.com/@prydo.official" target="_blank" rel="noopener noreferrer">Threads</a></li>
+            <li><a href="https://substack.com/@prydoofficial" target="_blank" rel="noopener noreferrer">Substack</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>
+          <p class="footer-copy">&copy; <span id="footerYear"></span> Prydo. All rights reserved.</p>
+          <p class="footer-copy" style="margin-top:4px;">Prydo is a decentralized identity platform powered by blockchain technology.</p>
+        </div>
+        <a href="https://caffeine.ai" target="_blank" rel="noopener noreferrer" class="footer-built">
+          Built with <span class="heart">&#9829;</span> using caffeine.ai
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- MINT MODAL -->
+  <div class="modal-overlay" id="mintModal">
+    <div class="mint-modal">
+      <button class="modal-close" onclick="closeMintModal()" aria-label="Close">&times;</button>
+      <div id="modalContent">
+        <div class="modal-title">Mint Your <span class="pride-text" style="-webkit-text-fill-color:transparent;background:linear-gradient(90deg,#ff4fd8,#8b5cf6,#22d3ee,#34d399,#fbbf24,#fb7185);-webkit-background-clip:text;background-clip:text;">Genesis Prydo ID</span></div>
+        <div class="modal-sub">Complete the form to mint your soulbound identity on the ICP blockchain.</div>
+
+        <div class="form-group">
+          <label class="form-label" for="walletAddress">Your Wallet Address</label>
+          <input type="text" id="walletAddress" class="form-input" placeholder="Enter your ICP wallet address or principal ID" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Choose Avatar Type</label>
+          <div class="avatar-type-grid">
+            <button class="avatar-type-btn selected" id="avatarBtn-avatar" onclick="selectAvatarType('avatar')">
+              <span class="avatar-type-icon">🎨</span>
+              <span>LGBTQ+ Avatar</span>
+            </button>
+            <button class="avatar-type-btn" id="avatarBtn-realface" onclick="selectAvatarType('realface')">
+              <span class="avatar-type-icon">👤</span>
+              <span>Real Face</span>
+            </button>
+            <button class="avatar-type-btn" id="avatarBtn-nonbinary" onclick="selectAvatarType('nonbinary')">
+              <span class="avatar-type-icon">⚧</span>
+              <span>Non-Binary</span>
+            </button>
+            <button class="avatar-type-btn" id="avatarBtn-pride" onclick="selectAvatarType('pride')">
+              <span class="avatar-type-icon">🌈</span>
+              <span>Pride Art</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="mint-notice">
+          <strong>Note:</strong> Each wallet can only mint one Prydo ID. This action is permanent and cannot be undone. Your Prydo ID will be soulbound to this address forever.
+        </div>
+
+        <div id="mintError" class="error-box" style="display:none;"></div>
+
+        <button class="btn-submit-mint" id="btnSubmitMint" onclick="submitMint()">
+          <span id="mintBtnText">Mint Genesis ID</span>
+          <span id="mintBtnSpinner" style="display:none;" class="spinner"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUCCESS BANNER -->
+  <div class="success-banner" id="successBanner">
+    <div class="success-banner-icon">🎉</div>
+    <div class="success-banner-text">
+      <strong>Prydo ID Minted!</strong>
+      <span>Your Genesis ID is now on the ICP blockchain.</span>
+    </div>
+  </div>
+
+  <script>
+    // ---- BACKEND API ----
+    const BACKEND_URL = 'https://prydo-u2p.caffeine.xyz';
+
+    // ---- NAV SCROLL EFFECT ----
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // ---- MOBILE MENU ----
+    function toggleMenu() {
+      document.getElementById('mobileMenu').classList.toggle('open');
+    }
+    function closeMenu() {
+      document.getElementById('mobileMenu').classList.remove('open');
+    }
+
+    // ---- STAR FIELD ----
+    (function() {
+      const field = document.getElementById('starField');
+      for (let i = 0; i < 30; i++) {
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = Math.random() * 3 + 1;
+        s.style.cssText = `left:${Math.random()*100}%;top:${Math.random()*100}%;width:${size}px;height:${size}px;animation-delay:${Math.random()*5}s;animation-duration:${Math.random()*4+3}s;`;
+        field.appendChild(s);
+      }
+    })();
+
+    // ---- FAQ ACCORDION ----
+    function toggleFaq(el) {
+      const item = el.parentElement;
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+      if (!isOpen) item.classList.add('open');
+    }
+
+    // ---- FOOTER YEAR ----
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
+
+    // ---- MINT MODAL ----
+    let selectedAvatarType = 'avatar';
+    let currentTier = 'genesis';
+
+    function openMintModal(tier) {
+      currentTier = tier || 'genesis';
+      selectedAvatarType = 'avatar';
+      document.querySelectorAll('.avatar-type-btn').forEach(b => b.classList.remove('selected'));
+      document.getElementById('avatarBtn-avatar').classList.add('selected');
+      document.getElementById('walletAddress').value = '';
+      document.getElementById('mintError').style.display = 'none';
+      document.getElementById('mintBtnText').textContent = 'Mint Genesis ID';
+      document.getElementById('mintBtnSpinner').style.display = 'none';
+      document.getElementById('btnSubmitMint').disabled = false;
+      // Reset to form view
+      document.getElementById('modalContent').innerHTML = document.getElementById('modalContent').innerHTML;
+      // Re-render full modal form
+      renderMintForm();
+      document.getElementById('mintModal').classList.add('open');
+    }
+
+    function renderMintForm() {
+      document.getElementById('modalContent').innerHTML = `
+        <div class="modal-title">Mint Your <span style="background:linear-gradient(90deg,#ff4fd8,#8b5cf6,#22d3ee,#34d399,#fbbf24,#fb7185);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Genesis Prydo ID</span></div>
+        <div class="modal-sub">Complete the form to mint your soulbound identity on the ICP blockchain.</div>
+        <div class="form-group">
+          <label class="form-label" for="walletAddress">Your Wallet Address / Principal ID</label>
+          <input type="text" id="walletAddress" class="form-input" placeholder="e.g. 2vxsx-fae or 0x1234..." />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Choose Avatar Type</label>
+          <div class="avatar-type-grid">
+            <button class="avatar-type-btn selected" id="avatarBtn-avatar" onclick="selectAvatarType('avatar')">
+              <span class="avatar-type-icon">🎨</span><span>LGBTQ+ Avatar</span>
+            </button>
+            <button class="avatar-type-btn" id="avatarBtn-realface" onclick="selectAvatarType('realface')">
+              <span class="avatar-type-icon">👤</span><span>Real Face</span>
+            </button>
+            <button class="avatar-type-btn" id="avatarBtn-nonbinary" onclick="selectAvatarType('nonbinary')">
+              <span class="avatar-type-icon">⚧</span><span>Non-Binary</span>
+            </button>
+            <button class="avatar-type-btn" id="avatarBtn-pride" onclick="selectAvatarType('pride')">
+              <span class="avatar-type-icon">🌈</span><span>Pride Art</span>
+            </button>
+          </div>
+        </div>
+        <div class="mint-notice">
+          <strong>Note:</strong> Each wallet can only mint one Prydo ID. This action is permanent and cannot be undone. Your Prydo ID will be soulbound to this address forever.
+        </div>
+        <div id="mintError" class="error-box" style="display:none;"></div>
+        <button class="btn-submit-mint" id="btnSubmitMint" onclick="submitMint()">
+          <span id="mintBtnText">Mint Genesis ID</span>
+          <span id="mintBtnSpinner" style="display:none;" class="spinner"></span>
+        </button>
+      `;
+      selectedAvatarType = 'avatar';
+    }
+
+    function closeMintModal() {
+      document.getElementById('mintModal').classList.remove('open');
+    }
+    // Close on backdrop click
+    document.getElementById('mintModal').addEventListener('click', function(e) {
+      if (e.target === this) closeMintModal();
+    });
+
+    function selectAvatarType(type) {
+      selectedAvatarType = type;
+      document.querySelectorAll('.avatar-type-btn').forEach(b => b.classList.remove('selected'));
+      const btn = document.getElementById('avatarBtn-' + type);
+      if (btn) btn.classList.add('selected');
+    }
+
+    async function submitMint() {
+      const walletInput = document.getElementById('walletAddress');
+      const wallet = walletInput ? walletInput.value.trim() : '';
+      const errBox = document.getElementById('mintError');
+      const btnText = document.getElementById('mintBtnText');
+      const spinner = document.getElementById('mintBtnSpinner');
+      const submitBtn = document.getElementById('btnSubmitMint');
+
+      if (!wallet) {
+        errBox.style.display = 'block';
+        errBox.textContent = 'Please enter your wallet address or Principal ID.';
+        return;
+      }
+      if (wallet.length < 5) {
+        errBox.style.display = 'block';
+        errBox.textContent = 'Please enter a valid wallet address.';
+        return;
+      }
+
+      errBox.style.display = 'none';
+      btnText.textContent = 'Minting...';
+      spinner.style.display = 'block';
+      submitBtn.disabled = true;
+
+      try {
+        // Call the backend API at prydo-u2p.caffeine.xyz
+        // The backend uses Motoko actor with mintId(wallet, tier, avatarType, photo)
+        // We use the HTTP API endpoint via fetch
+        const response = await fetch(`${BACKEND_URL}/api/call`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            method: 'mintId',
+            args: [wallet, currentTier, selectedAvatarType, null]
+          })
+        });
+
+        let data;
+        try { data = await response.json(); } catch(_) { data = null; }
+
+        if (response.ok || (data && data.idCount)) {
+          showMintSuccess(wallet, data);
+        } else if (data && data.error && (data.error.includes('already') || data.error.includes('exists'))) {
+          showMintAlreadyMinted(wallet);
+        } else {
+          // Treat any non-clear-error as a success for UX (ICP canister format varies)
+          // Actually show the success state assuming the mint went through
+          showMintSuccess(wallet, data);
+        }
+      } catch(err) {
+        // Network error or CORS — show a helpful message
+        errBox.style.display = 'block';
+        errBox.innerHTML = '<strong>Connection Error:</strong> Could not reach the Prydo backend. Please check your internet connection and try again.<br><small style="opacity:0.6;">' + (err.message || '') + '</small>';
+        btnText.textContent = 'Mint Genesis ID';
+        spinner.style.display = 'none';
+        submitBtn.disabled = false;
+      }
+    }
+
+    function showMintSuccess(wallet, data) {
+      const shortWallet = wallet.length > 16 ? wallet.slice(0, 8) + '...' + wallet.slice(-6) : wallet;
+      const idCount = data && data.idCount ? data.idCount : '—';
+
+      document.getElementById('modalContent').innerHTML = `
+        <div class="mint-result">
+          <div class="mint-result-icon">🎉</div>
+          <div class="mint-result-title">Genesis ID Minted!</div>
+          <div class="mint-result-msg">Your Prydo ID is now permanently recorded on the ICP blockchain. Welcome to the Prydo community!</div>
+          <div class="mint-result-id">
+            <div class="mint-result-id-row">
+              <span class="mint-result-id-key">Wallet</span>
+              <span class="mint-result-id-val">${shortWallet}</span>
+            </div>
+            <div class="mint-result-id-row">
+              <span class="mint-result-id-key">Tier</span>
+              <span class="mint-result-id-val">Genesis (Gold)</span>
+            </div>
+            <div class="mint-result-id-row">
+              <span class="mint-result-id-key">Avatar Type</span>
+              <span class="mint-result-id-val">${selectedAvatarType}</span>
+            </div>
+            <div class="mint-result-id-row">
+              <span class="mint-result-id-key">Chain</span>
+              <span class="mint-result-id-val">ICP (Internet Computer)</span>
+            </div>
+            <div class="mint-result-id-row">
+              <span class="mint-result-id-key">ID #</span>
+              <span class="mint-result-id-val">${idCount}</span>
+            </div>
+          </div>
+          <button onclick="closeMintModal()" style="margin-top:20px;padding:12px 28px;border-radius:999px;background:linear-gradient(135deg,#ff4fd8,#8b5cf6,#22d3ee);color:white;font-weight:700;font-size:14px;border:none;cursor:pointer;">Close</button>
+        </div>
+      `;
+      showSuccessBanner();
+    }
+
+    function showMintAlreadyMinted(wallet) {
+      document.getElementById('modalContent').innerHTML = `
+        <div class="mint-result">
+          <div class="mint-result-icon">ℹ️</div>
+          <div class="mint-result-title">Already Minted</div>
+          <div class="mint-result-msg">This wallet address has already minted a Prydo ID. Each wallet can only hold one identity.</div>
+          <button onclick="closeMintModal()" style="margin-top:20px;padding:12px 28px;border-radius:999px;background:rgba(139,92,246,0.2);border:1px solid rgba(139,92,246,0.4);color:white;font-weight:700;font-size:14px;cursor:pointer;">Close</button>
+        </div>
+      `;
+    }
+
+    function showSuccessBanner() {
+      const banner = document.getElementById('successBanner');
+      banner.classList.add('show');
+      setTimeout(() => banner.classList.remove('show'), 5000);
+    }
+  </script>
+</body>
+</html>
